@@ -12,7 +12,7 @@ from pydantic import BaseModel
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 # File paths
-DATA_FILE = "../data/listings.csv"
+DATA_FILE = "./data/listings.csv"
 PREPROCESSOR_FILE = "preprocessor.pkl"
 PROCESSED_DF_FILE = "processed_df.pkl"
 FEATURE_MATRIX_FILE = "feature_matrix.pkl"
@@ -232,4 +232,5 @@ if __name__ == "__main__":
                       f"Area: {rec.get('Total_Area', 'N/A')} | "
                       f"Baths: {rec.get('Baths', 'N/A')}")
         else:
+
             print("\nNo recommendations found.")
