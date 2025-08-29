@@ -46,7 +46,7 @@ for filename, file_id in files.items():
 
 # Load model artifacts
 try:
-    price_pipe = joblib.load("price-model.joblib")
+    # price_pipe = joblib.load("price-model.joblib")
     with open("preprocessor.pkl", "rb") as f:
         preprocessor = pickle.load(f)
     with open("processed_df.pkl", "rb") as f:
@@ -87,23 +87,23 @@ class WishlistItem(BaseModel):
 class WishlistRequest(BaseModel):
     wishlist: List[WishlistItem]
 
-@app.post("/predict")
-def predict(req: PredictRequest):
-    """Predicts the price of a property based on its features."""
-    # (This endpoint remains unchanged)
-    X = pd.DataFrame([{
-        "Total_Area": req.total_area,
-        "BHK": req.bhk,
-        "Baths": req.baths,
-        "BalconyFlag": 1 if req.balcony else 0,
-        "Location": req.location
-    }])
-    y_log = price_pipe.predict(X)[0]
-    y = np.expm1(y_log)
-    return {
-        "price_inr": float(y),
-        "price_readable": f"₹{round(y/1e7,2)} Cr" if y >= 1e7 else f"₹{round(y/1e5,2)} Lakh"
-    }
+# @app.post("/predict")
+# def predict(req: PredictRequest):
+#     """Predicts the price of a property based on its features."""
+#     # (This endpoint remains unchanged)
+#     X = pd.DataFrame([{
+#         "Total_Area": req.total_area,
+#         "BHK": req.bhk,
+#         "Baths": req.baths,
+#         "BalconyFlag": 1 if req.balcony else 0,
+#         "Location": req.location
+#     }])
+#     y_log = price_pipe.predict(X)[0]
+#     y = np.expm1(y_log)
+#     return {
+#         "price_inr": float(y),
+#         "price_readable": f"₹{round(y/1e7,2)} Cr" if y >= 1e7 else f"₹{round(y/1e5,2)} Lakh"
+#     }
 
 
 @app.post("/recommend")
@@ -127,5 +127,6 @@ def recommend(request: WishlistRequest):
 if __name__ == "__main__":
 
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
 
 
