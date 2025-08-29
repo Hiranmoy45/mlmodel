@@ -26,6 +26,21 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+# Google Drive file IDs
+files = {
+    "price-model.joblib": "1pSLEqZ2aqnPCVGgEwf8It85WxJzUAzM4",
+    "preprocessor.pkl": "1zFpvtuSJEvqoj-PSQB9Y9Xq4xEeS7cRV",
+    "processed_df.pkl": "17N4gpO7eoFU0f1TyAIPbN9OJfnoobgI2",
+    "feature_matrix.pkl": "14qvItow972i41a9QhRiqXAc0ObwtDRQ-"
+}
+
+# Download if not exists
+for filename, file_id in files.items():
+    if not os.path.exists(filename):
+        url = f"https://drive.google.com/uc?id={file_id}"
+        print(f"Downloading {filename}...")
+        gdown.download(url, filename, quiet=False)
+
 
 # Load model artifacts
 try:
@@ -108,4 +123,5 @@ def recommend(request: WishlistRequest):
     return {"properties": enriched_properties}
 
 if __name__ == "__main__":
+
     uvicorn.run(app, host="0.0.0.0", port=8000)
