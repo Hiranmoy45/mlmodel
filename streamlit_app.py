@@ -6,6 +6,7 @@ import pickle
 import pandas as pd
 import numpy as np
 import uvicorn
+import os
 import joblib
 from train_recommendation import get_recommendations
 import json
@@ -125,3 +126,4 @@ def recommend(request: WishlistRequest):
 if __name__ == "__main__":
 
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
